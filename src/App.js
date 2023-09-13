@@ -1,11 +1,21 @@
-import React from 'react'
+import React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Routes from "./routes";
+
+const theme = createTheme({
+  status: {
+    danger: "red",
+  },
+});
 
 function App() {
   return (
-    <div>
-      
-    </div>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Routes />
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
