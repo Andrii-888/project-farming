@@ -1,28 +1,56 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
-import Logo from "../../assets/logo.svg";
+import { AppBar, Button, Icon, Stack, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Logo from "../../assets/logo.svg";
+import Cart from "../../assets/cart.svg";
+import ButtonLink from "../ButtonLink";
+import { APP_ROUTES } from "../../constants";
 
 const HeaderStyled = styled(AppBar)(({ theme }) => ({
-  background: "green",
+  background: "transparent",
   height: "72px",
+  width: "auto",
   boxShadow: "none",
+  margin: "20px 30px",
+
+  "& .MuiToolbar-root": {
+    padding: 0,
+    justifyContent: "space-between",
+  },
+}));
+
+const Links = styled(Stack)(() => ({
+  flexDirection: "row",
+  gap: "30px",
+}));
+
+const NavContainer = styled(Stack)(() => ({
+  flexDirection: "row",
+  alignItems: "center",
+  flex: 1,
+  padding: "0 170px 0 60px",
+  justifyContent: "space-between",
 }));
 
 export default function Header() {
   return (
     <HeaderStyled position="static">
       <Toolbar variant="dense">
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2 }}
-        >
-          <img src={Logo} alt="React Logo" />
-        </IconButton>
-        <Typography variant="h6" color="inherit" component="div">
-          Photos
-        </Typography>
+        <Icon sx={{ height: "72px", width: "72px" }}>
+          <img src={Logo} alt="logo" />
+        </Icon>
+        <NavContainer>
+          <Button variant="contained" color="primary">
+            Catalog
+          </Button>
+          <Links>
+            <ButtonLink to={APP_ROUTES.MAIN} title="Main Page" />
+            <ButtonLink to={APP_ROUTES.PRODUCTS} title="All products" />
+            <ButtonLink to={APP_ROUTES.SALES} title="All sales" />
+          </Links>
+        </NavContainer>
+        <Icon sx={{ height: "30px", width: "30px" }}>
+          <img src={Cart} alt="cart" />
+        </Icon>
       </Toolbar>
     </HeaderStyled>
   );
