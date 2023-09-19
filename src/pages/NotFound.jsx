@@ -7,7 +7,6 @@ function NotFound() {
     <Box
       component="div"
       sx={{
-        position: "absolute",
         backgroundPosition: "center",
         backgroundSize: "cover",
         backgroundImage: `url(${Image})`,
