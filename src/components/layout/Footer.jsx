@@ -1,6 +1,5 @@
 import { Box, Grid, Link, Stack, SvgIcon, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-// import { useTheme } from "@mui/material/styles";
 
 import Image from "../../assets/map.png";
 import { ADDRESS, PHONE_NUMBER } from "../../constants";
@@ -32,7 +31,6 @@ const svgStyle = {
 };
 
 function Footer() {
-  // const { palette, typography } = useTheme();
   return (
     <Box component="footer" sx={{ p: "48px 32px 47px 32px" }}>
       <Grid container spacing={6}>
@@ -63,7 +61,13 @@ function Footer() {
               Address
             </Typography>
 
-            <Address variant="h1" component={Link}>
+            <Address
+              variant="h1"
+              component={Link}
+              href="https://www.google.com/search?q=telranDE"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               {ADDRESS}
             </Address>
             <Typography variant="body2" sx={{ fontWeight: 500, pt: "30px" }}>

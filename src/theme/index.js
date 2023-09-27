@@ -55,6 +55,11 @@ const theme = createTheme({
     text: {
       main: "#000",
     },
+    common: { black: "#000", white: "#fff" },
+    grey: {
+      dark: "#2D2D2D",
+      light: "#8B8B8B",
+    },
   },
   components: {
     MuiCssBaseline: {
