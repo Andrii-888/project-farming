@@ -4,16 +4,12 @@ import Image from "../../assets/flowers.png";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { APP_ROUTES } from "../../constants";
-import { useGetCategoriesQuery } from "../../store/features/categories/slice";
+import { useSelector } from "react-redux";
+import { selectAllCategories } from "../../store/features/categories/categoriesSlice";
 
 function Home() {
-  const {
-    data: posts,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetCategoriesQuery();
+  const data = useSelector(selectAllCategories);
+  console.log(data);
   const navigate = useNavigate();
 
   const { palette, typography } = useTheme();
@@ -21,6 +17,11 @@ function Home() {
   const handleNavToSalePage = () => {
     navigate(APP_ROUTES.PRODUCTS, { state: { type: "sale" } });
   };
+
+  const handleNavToCategoriesPage = () => {
+    navigate(APP_ROUTES.CATEGORIES);
+  };
+
   return (
     <Container disableGutters maxWidth={false} sx={{ p: "76px 0 45px 0" }}>
       <Stack flexDirection="row" sx={{ background: "#A1E2EB" }}>
@@ -79,6 +80,47 @@ function Home() {
             width: "50%",
           }}
         />
+      </Stack>
+      <Stack>
+        <Stack
+          sx={{
+            p: "40px 30px",
+            flexDirection: "row",
+            gap: "96px",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h1">Catalog</Typography>
+          <Button
+            onClick={handleNavToCategoriesPage}
+            variant="outlined"
+            sx={{
+              width: "120px",
+              height: " 30.97px",
+              fontSize: "12px",
+              color: palette.grey.light,
+            }}
+          >
+            All categories
+          </Button>
+        </Stack>
+        <Stack>
+          {data.slice(0, 4).map((category) => (
+            <Stack>
+              <Box
+                component="div"
+                sx={{
+                  backgroundSize: "cover",
+                  backgroundImage: "url(../../assets" + category.image + ")",
+                  backgroundRepeat: "no-repeat",
+                  height: "682px",
+                  width: "50%",
+                }}
+              />
+              {category.title}
+            </Stack>
+          ))}
+        </Stack>
       </Stack>
     </Container>
   );

@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { categoriesApi } from "./features/categories/slice";
+import categoriesSlice, {
+  fetchCategories,
+} from "./features/categories/categoriesSlice";
 
 export const store = configureStore({
   reducer: {
-    [categoriesApi.reducerPath]: categoriesApi.reducer,
+    categories: categoriesSlice,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(categoriesApi.middleware),
+  devTools: process.env.NODE_ENV !== "production",
 });
-setupListeners(store.dispatch);
+
+store.dispatch(fetchCategories());
