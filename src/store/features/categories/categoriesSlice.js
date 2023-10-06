@@ -38,3 +38,5 @@ export const categoriesSlice = createSlice({
 
 export default categoriesSlice.reducer;
 export const selectAllCategories = (state) => state.categories.data;
+export const selectHomeCategories = (state) =>
+  state.categories.data.slice(0, 4);
