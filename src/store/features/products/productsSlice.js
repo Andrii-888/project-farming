@@ -37,7 +37,9 @@ export const productsSlice = createSlice({
 });
 
 export default productsSlice.reducer;
-export const selectSaleProducts = (state) =>
-  state.products.data.filter((product) => product.discont_price);
+export const selectAllProducts = (state) =>
+  state.products.data;
 export const selectSaleProductsDashboard = (state) =>
   state.products.data.filter((product) => product.discont_price).slice(0, 4);
+export const selectSaleProducts = (state) =>
+  state.products.data.filter((product) => product.discont_price);

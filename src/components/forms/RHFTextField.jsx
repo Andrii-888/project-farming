@@ -1,7 +1,7 @@
 import { useFormContext, Controller } from "react-hook-form";
 import { TextField } from "@mui/material";
 
-export default function RHFTextField({ name, rules, ...other }) {
+export default function RHFTextField({ name, rules, onChange, ...props }) {
   const { control } = useFormContext();
 
   return (
@@ -15,7 +15,14 @@ export default function RHFTextField({ name, rules, ...other }) {
           fullWidth
           error={!!error}
           helperText={error?.message}
-          {...other}
+          onChange={(event) => {
+            if (onChange && typeof onChange === "function") {
+              field.onChange(onChange(event));
+            } else {
+              field.onChange(event);
+            }
+          }}
+          {...props}
         />
       )}
     />

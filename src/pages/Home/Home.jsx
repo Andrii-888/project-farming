@@ -1,5 +1,13 @@
-import React from "react";
-import { Stack, Box, Typography, Button, Container } from "@mui/material";
+import { useState } from "react";
+import {
+  Stack,
+  Box,
+  Typography,
+  Button,
+  Container,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import Banner from "../../assets/flowers.png";
 import Leprechaun from "../../assets/leprechaun.png";
 import { useTheme } from "@mui/material/styles";
@@ -10,19 +18,19 @@ import { selectHomeCategories } from "../../store/features/categories/categories
 import DiscountForm from "../../components/forms/DiscountForm";
 import { selectSaleProductsDashboard } from "../../store/features/products/productsSlice";
 import axios from "axios";
+import ProductListItem from "../Products/ProductListItem";
 
 const getImgPath = (imgName) => {
   return require(`../../assets${imgName}`);
 };
 
-const getPercentage = (price, discontPrice) => {
-  return Math.round(((discontPrice - price) / price) * 100);
-};
-
 function Home() {
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("error");
+
   const categories = useSelector(selectHomeCategories);
   const saleProducts = useSelector(selectSaleProductsDashboard);
-  console.log(saleProducts);
+
   const navigate = useNavigate();
 
   const { palette, typography } = useTheme();
@@ -35,12 +43,40 @@ function Home() {
     navigate(APP_ROUTES.CATEGORIES);
   };
 
-  const handleGetDiscaunt = (data) => {
-    axios.post(`${BASE_URL}/sale/send`, data);
+  const handleGetDiscount = async (data) => {
+    try {
+      await axios.post(`${BASE_URL}/sale/send`, data);
+
+      setMessage("Getting the discount was successful.");
+
+      setMessageType("success");
+    } catch (error) {
+      setMessage("Something went wrong! Try again.");
+      setMessageType("error");
+    }
+  };
+
+  const handleHideError = () => {
+    setMessage("");
   };
 
   return (
     <Container disableGutters maxWidth={false} sx={{ p: "76px 0 45px 0" }}>
+      <Snackbar
+        open={!!message}
+        autoHideDuration={2000}
+        onClose={handleHideError}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleHideError}
+          severity={messageType}
+          sx={{ width: "100%" }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
+
       <Stack flexDirection="row" sx={{ background: "#A1E2EB" }}>
         <Stack sx={{ width: "50%", m: "130px 0 140px 50px" }}>
           <Typography
@@ -121,9 +157,18 @@ function Home() {
           </Button>
         </Stack>
 
-        <Stack sx={{ flexDirection: "row", gap: "36px" }}>
+        <Stack
+          sx={{
+            flexDirection: "row",
+            gap: "36px",
+            justifyContent: "space-between",
+          }}
+        >
           {categories.map((category) => (
-            <Stack sx={{ gap: "20px", alignItems: "center", fontSize: "18px" }}>
+            <Stack
+              sx={{ gap: "20px", alignItems: "center", fontSize: "18px" }}
+              key={category.id}
+            >
               <Box
                 component="div"
                 sx={{
@@ -159,7 +204,6 @@ function Home() {
         <Box
           component="div"
           sx={{
-            // backgroundPosition: "center",
             backgroundSize: "contain",
             backgroundImage: `url(${Leprechaun})`,
             backgroundRepeat: "no-repeat",
@@ -202,7 +246,8 @@ function Home() {
                 on the first order
               </Typography>
             </Stack>
-            <DiscountForm onSubmit={() => {}} />
+
+            <DiscountForm onSubmit={handleGetDiscount} />
           </Stack>
         </Stack>
       </Stack>
@@ -210,57 +255,15 @@ function Home() {
       <Stack sx={{ m: "50px 30px 90px 30px", gap: "30px" }}>
         <Typography variant="h1">Sale</Typography>
 
-        <Stack sx={{ flexDirection: "row", gap: "36px" }}>
+        <Stack
+          sx={{
+            flexDirection: "row",
+            gap: "36px",
+            justifyContent: "space-between",
+          }}
+        >
           {saleProducts.map((product) => (
-            <Stack sx={{ gap: "20px", alignItems: "center" }}>
-              <Box
-                component="div"
-                sx={{
-                  backgroundSize: "cover",
-                  backgroundImage: `url(${getImgPath(product.image)})`,
-                  backgroundRepeat: "no-repeat",
-                  height: "350px",
-                  width: "318px",
-                }}
-              />
-              <Stack
-                sx={{
-                  flexDirection: "row",
-                  gap: "20px",
-                  color: "#000",
-                  alignItems: "center",
-                }}
-              >
-                <Typography sx={{ fontSize: "30px" }}>
-                  ${product.discont_price}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "20px",
-                    color: "#8B8B8B",
-                    textDecoration: "line-through",
-                  }}
-                >
-                  ${product.price}
-                </Typography>
-                <Typography sx={{ fontSize: "20px", color: "#FF32A1" }}>
-                  {getPercentage(product.price, product.discont_price)}%
-                </Typography>
-              </Stack>
-              <Typography
-                variant="body2"
-                sx={{
-                  fontSize: "16px",
-                  fontStyle: "normal",
-                  color: "#3A3A3A",
-                  alignSelf: "flex-start",
-                  fontWeight: typography.fontWeightMedium,
-                  m: "0 24px 0",
-                }}
-              >
-                {product.title}
-              </Typography>
-            </Stack>
+            <ProductListItem  {...product} key={product.id}/>
           ))}
         </Stack>
       </Stack>

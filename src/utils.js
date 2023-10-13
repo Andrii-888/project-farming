@@ -15,3 +15,7 @@ export const responsiveFontSizes = ({ sm, md, lg }) => {
     },
   };
 };
+
+export const getPercentage = (firstOperand, secondOperand) => {
+  return Math.round(((secondOperand - firstOperand) / firstOperand) * 100);
+};
