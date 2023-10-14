@@ -1,19 +1,13 @@
 import styled from "@emotion/styled";
-import {
-  Checkbox,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Checkbox, Stack, TextField, Typography } from "@mui/material";
 
 const StyleTextField = styled(TextField)(({ theme }) => ({
   width: "103px",
+  height: "22px",
   "& .MuiInputBase-input": {
     borderRadius: "7px",
-    height: "22px",
-    padding: "10px ",
+
+    padding: "10px",
   },
 }));
 
@@ -40,18 +34,22 @@ const Filters = () => {
           Price
         </Typography>
 
-        <StyleTextField
-          label="from"
-          variant="outlined"
-          sx={{
-            marginLeft: "15px",
-          }}
-        />
-        <StyleTextField
-          label="to"
-          variant="outlined"
-          sx={{ marginLeft: "15px" }}
-        />
+        <Box flexDirection="row" sx={{ alignItems: "center", height: "40px" }}>
+          <StyleTextField
+            label="from"
+            // variant="outlined"
+            size="small"
+            sx={{
+              marginLeft: "15px",
+            }}
+          />
+          <StyleTextField
+            label="to"
+            // variant="outlined"
+            size="small"
+            sx={{ marginLeft: "15px" }}
+          />
+        </Box>
       </Stack>
 
       <Stack flexDirection="row" sx={{ alignItems: "center" }}>
@@ -70,14 +68,15 @@ const Filters = () => {
         </Typography>
         <Checkbox
           sx={{
-            borderRadius: "7px",
+            color: "#000000",
             borderWidth: "1px",
-            strokeWidth: "1px",
-            "& .MuiSvgIcon-root": {
-              fontSize: 40,
-              height: "40px",
-              width: "40px",
-            },
+            borderRadius: "7px",
+            // strokeWidth: "1px",
+            // "& .MuiSvgIcon-root": {
+            //   fontSize: 40,
+            height: "40px",
+            width: "40px",
+            // },
           }}
         />
       </Stack>
@@ -96,11 +95,17 @@ const Filters = () => {
           Sorted
         </Typography>
 
-        <Select value={10} label="Age" onChange={() => {}} size="small">
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
+        <Box width="219px">
+          <TextField
+            label="by default"
+            select
+            // value={prioduct}
+            // onChange={handleChange}
+            fullWidth
+            size="small"
+            color="secondary"
+          ></TextField>
+        </Box>
       </Stack>
     </Stack>
   );

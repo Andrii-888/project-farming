@@ -13,7 +13,9 @@ function Products() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ p: "0 30px" }}>
-      <Typography variant="h1">All Products</Typography>
+      <Typography variant="h1" sx={{ marginTop: "79px" }}>
+        All Products
+      </Typography>
       <Filters />
 
       <Stack
@@ -33,5 +35,3 @@ function Products() {
 }
 
 export default Products;
-
-
