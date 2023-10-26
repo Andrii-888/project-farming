@@ -36,7 +36,7 @@ function Home() {
   const { palette, typography } = useTheme();
 
   const handleNavToSalePage = () => {
-    navigate(APP_ROUTES.PRODUCTS, { state: { type: "sale" } });
+    navigate(APP_ROUTES.PRODUCTS, { state: { sale: true } });
   };
 
   const handleNavToCategoriesPage = () => {
@@ -142,7 +142,6 @@ function Home() {
           }}
         >
           <Typography variant="h1">Catalog</Typography>
-
           <Button
             onClick={handleNavToCategoriesPage}
             variant="outlined"
@@ -263,7 +262,7 @@ function Home() {
           }}
         >
           {saleProducts.map((product) => (
-            <ProductListItem  {...product} key={product.id}/>
+            <ProductListItem {...product} key={product.id} />
           ))}
         </Stack>
       </Stack>

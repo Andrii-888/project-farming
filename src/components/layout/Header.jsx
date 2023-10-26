@@ -45,7 +45,11 @@ export default function Header() {
           <Links>
             <ButtonLink to={APP_ROUTES.MAIN} title="Main Page" />
             <ButtonLink to={APP_ROUTES.PRODUCTS} title="All products" />
-            <ButtonLink to={APP_ROUTES.SALES} title="All sales" />
+            <ButtonLink
+              to={APP_ROUTES.PRODUCTS}
+              state={{ sale: true }}
+              title="All sales"
+            />
           </Links>
         </NavContainer>
         <Icon sx={{ height: "30px", width: "30px" }}>

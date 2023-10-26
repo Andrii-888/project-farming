@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 
-function ButtonLink({ to, title }) {
+function ButtonLink({ to, title, ...props }) {
   const { palette } = useTheme();
   return (
     <Button
@@ -15,6 +15,7 @@ function ButtonLink({ to, title }) {
       disableRipple
       component={RouterLink}
       to={to}
+      {...props}
     >
       {title}
     </Button>

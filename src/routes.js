@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout";
 import { APP_ROUTES } from "./constants";
 import Loader from "./components/Loader";
+import Categories from "./pages/Categories/Categories";
 
 // import ProductsPage from "./Component/pages/ProductsPage";
 // import NotFoundPage from "./Component/pages/NotFoundPage";
@@ -29,7 +30,6 @@ export default function () {
             }
           />
           <Route
-            index
             path={APP_ROUTES.PRODUCTS}
             element={
               <Suspense fallback={<Loader />}>
@@ -38,7 +38,6 @@ export default function () {
             }
           />
           <Route
-            index
             path={`${APP_ROUTES.PRODUCTS}/:id`}
             element={
               <Suspense fallback={<Loader />}>
@@ -47,7 +46,6 @@ export default function () {
             }
           />
           <Route
-            index
             path={APP_ROUTES.SALES}
             element={
               <Suspense fallback={<Loader />}>
@@ -56,7 +54,15 @@ export default function () {
             }
           />
           <Route
-            index
+            path={APP_ROUTES.CATEGORIES}
+            element={
+              <Suspense fallback={<Loader />}>
+                <Categories />
+              </Suspense>
+            }
+          />
+
+          <Route
             path="*"
             element={
               <Suspense fallback={<Loader />}>

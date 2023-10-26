@@ -1,79 +1,105 @@
-import React from "react";
-import {
-  TextField,
-  Checkbox,
-  FormControl,
-  Select,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { Stack, MenuItem, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { StyleTextField, StyledCheckbox, StyledSelect } from "./styles";
 
-const label = { inputProps: { "aria-label": "Checkbox demo" } };
+const handleBlockLetters = (event) => {
+  if (/^\d+$/.test(event.target.value)) {
+    return event;
+  }
 
-const styles = {
-  input: {
-    width: "103px",
-    height: "42px",
-    // border: "1px solid #000000",
-    // color: "#000000",
-    // borderRadius: "7px",
-  },
-  checkbox: {
-    width: "40px",
-    height: "40px",
-    // border: "1px solid #000000",
-    // borderRadius: "7px",
-  },
-  select: {
-    width: "219px",
-    height: "40px",
-    // border: "1px solid #000000",
-    // borderRadius: "7px",
-    color: "#000000",
-  },
+  event.target.value = event.target.value.slice(0, -1);
+  return event;
 };
 
-function Filters() {
+const NumberTextField = ({ onChange = () => {}, ...props }) => {
+  const handleChange = (event) => {
+    event = handleBlockLetters(event);
+
+    onChange(event);
+  };
+
+  return <StyleTextField size="small" onChange={handleChange} {...props} />;
+};
+
+const SORT_OPTIONS = {
+  DEFAULT: "default",
+  PRICE: "price",
+  TITLE: "title",
+  DISCOUNT: "discount",
+};
+
+const Filters = () => {
+  const { state } = useLocation();
+  const { sale = false } = state || {};
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filters = Object.fromEntries(searchParams);
+
+  const [sortedBy, setSortedBy] = useState(
+    filters.sortedBy || SORT_OPTIONS.DEFAULT
+  );
+  const [discounted, setDiscounted] = useState(!!filters.discounted);
+  const [range, setRange] = useState({
+    from: filters.from || "",
+    to: filters.to || "",
+  });
+
+  const { palette } = useTheme();
+
+  const handleSetFiltersToURL = (params) => {
+    const combinedParams = {
+      ...filters,
+      ...params,
+    };
+
+    setSearchParams(
+      Object.fromEntries(
+        Object.entries(combinedParams).filter(([_, value]) => !!value)
+      )
+    );
+  };
+
+  const handleChangeDiscounted = (event) => {
+    setDiscounted(event.target.checked);
+
+    handleSetFiltersToURL({
+      discounted: event.target.checked,
+    });
+  };
+
+  const handleChangeSortedBy = (event) => {
+    setSortedBy(event.target.value);
+
+    handleSetFiltersToURL({
+      sortedBy: event.target.value,
+    });
+  };
+
+  const handleChangeRange = ({ target }) => {
+    const { name, value } = target;
+
+    setRange((range) => ({
+      ...range,
+      [name]: value,
+    }));
+
+    handleSetFiltersToURL({
+      ...range,
+      [name]: value,
+    });
+  };
+
   return (
     <Stack
       flexDirection="row"
       sx={{
         alignItems: "center",
-        margin: "88.17px 0 54.2px 0",
+        margin: "88px 0 54px 0",
       }}
     >
-      <Typography
-        sx={{
-          alignItems: "center",
-          fontSize: "1.25rem",
-          fontStyle: "normal",
-          fontWeight: "600",
-          lineHeight: "1.625rem",
-          letterSpacing: "0.0375rem",
-          color: "#000000",
-          m: "88px 0 54.2px 30px",
-        }}
-      >
-        Price
-      </Typography>
-
-      <TextField
-        label="from"
-        variant="outlined"
-        size="small"
-        style={styles.input}
-        sx={{ m: "81px 0 54.2px 15px" }}
-      />
-      <TextField
-        label="to"
-        variant="outlined"
-        size="small"
-        style={styles.input}
-        sx={{ m: "81px 0 54.2px 15px" }}
-      />
-
-      <Stack flexDirection="row" sx={{ alignItems: "center" }}>
+      <Stack flexDirection="row" sx={{ alignItems: "center", gap: "15px" }}>
         <Typography
           sx={{
             fontSize: "1.25rem",
@@ -81,21 +107,48 @@ function Filters() {
             fontWeight: "600",
             lineHeight: "1.625rem",
             letterSpacing: "0.0375rem",
-            color: "#000000",
-            m: "81px 0 54px 40px",
+            color: palette.common.black,
           }}
         >
-          Discounted items
+          Price
         </Typography>
 
-        <Checkbox
-          {...label}
-          defaultChecked
-          style={styles.checkbox}
-          sx={{ m: "81px 0 47px 39px" }}
+        <NumberTextField
+          label="from"
+          name="from"
+          value={range.from}
+          onChange={handleChangeRange}
+        />
+        <NumberTextField
+          label="to"
+          name="to"
+          value={range.to}
+          onChange={handleChangeRange}
         />
       </Stack>
 
+      {!sale && (
+        <Stack flexDirection="row" sx={{ alignItems: "center" }}>
+          <Typography
+            sx={{
+              fontSize: "1.25rem",
+              fontStyle: "normal",
+              fontWeight: "600",
+              lineHeight: "1.625rem",
+              letterSpacing: "0.0375rem",
+              color: palette.common.black,
+              margin: "0 39px 0 40px",
+            }}
+          >
+            Discounted items
+          </Typography>
+          <StyledCheckbox
+            checked={discounted}
+            onChange={handleChangeDiscounted}
+          />
+        </Stack>
+      )}
+
       <Stack flexDirection="row" sx={{ alignItems: "center" }}>
         <Typography
           sx={{
@@ -104,26 +157,23 @@ function Filters() {
             fontWeight: "600",
             lineHeight: "1.625rem",
             letterSpacing: "0.0375rem",
-            color: "#000000",
-            m: "81px 0 47px 91px",
+            color: palette.common.black,
+            m: "0 41px 0 91px",
           }}
         >
           Sorted
         </Typography>
 
-        <FormControl
-          variant="outlined"
-          size="small"
-          style={styles.select}
-          sx={{ m: "81px 0 47px 42px" }}
-        >
-          <Select>
-            <MenuItem label="by default"></MenuItem>
-          </Select>
-        </FormControl>
+        <StyledSelect value={sortedBy} onChange={handleChangeSortedBy}>
+          {Object.values(SORT_OPTIONS).map((option) => (
+            <MenuItem sx={{ fontSize: "1rem" }} key={option} value={option}>
+              by {option}
+            </MenuItem>
+          ))}
+        </StyledSelect>
       </Stack>
     </Stack>
   );
-}
+};
 
 export default Filters;

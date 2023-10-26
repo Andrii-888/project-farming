@@ -1,6 +1,9 @@
 import { Typography, Box, Stack } from "@mui/material";
 import { getPercentage } from "../../utils";
 import { useTheme } from "@mui/material/styles";
+import { AddToCartButton, ProductIconBlock } from "./styles";
+import { useSelector } from "react-redux";
+import { selectProductInCartById } from "../../store/features/cart/cartSlice";
 
 const getImgPath = (imgName) => {
   return require(`../../assets${imgName}`);
@@ -10,24 +13,42 @@ const ProductListItem = ({
   title,
   price,
   discont_price,
-  description,
   image,
   id,
+  onAddToCart,
+  onRemoveFromCart,
 }) => {
-  const { palette, typography } = useTheme();
+  const { typography } = useTheme();
+  const isProductAddedToCart = useSelector((state) =>
+    selectProductInCartById(state, id)
+  );
+
+  const handleAddOrRemoveFromCart = () => {
+    if (isProductAddedToCart) {
+      onRemoveFromCart();
+    } else {
+      onAddToCart();
+    }
+  };
 
   return (
     <Stack sx={{ gap: "20px", alignItems: "center", maxWidth: 300 }} key={id}>
-      <Box
-        component="div"
-        sx={{
-          backgroundSize: "cover",
-          backgroundImage: `url(${getImgPath(image)})`,
-          backgroundRepeat: "no-repeat",
-          height: "350px",
-          width: "300px",
-        }}
-      />
+      <ProductIconBlock>
+        <Box
+          component="div"
+          sx={{
+            backgroundSize: "cover",
+            backgroundImage: `url(${getImgPath(image)})`,
+            backgroundRepeat: "no-repeat",
+            height: "350px",
+            width: "300px",
+          }}
+        />
+        <AddToCartButton onClick={handleAddOrRemoveFromCart}>
+          {isProductAddedToCart ? "Remove from cart" : "Add to cart"}
+        </AddToCartButton>
+      </ProductIconBlock>
+
       <Stack
         sx={{
           flexDirection: "row",

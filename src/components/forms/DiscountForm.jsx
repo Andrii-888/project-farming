@@ -54,13 +54,6 @@ function DiscountForm({ onSubmit }) {
               minHeight: "100%",
             },
           }}
-          FormHelperTextProps={{
-            sx: {
-              color: `$
-                  {pallete.warning.light} ! 
-                  impotent`,
-            },
-          }}
           onChange={handleBlockLetters}
         />
 

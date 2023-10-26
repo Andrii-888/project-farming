@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../../constants";
 
@@ -37,9 +37,19 @@ export const productsSlice = createSlice({
 });
 
 export default productsSlice.reducer;
-export const selectAllProducts = (state) =>
-  state.products.data;
-export const selectSaleProductsDashboard = (state) =>
-  state.products.data.filter((product) => product.discont_price).slice(0, 4);
-export const selectSaleProducts = (state) =>
-  state.products.data.filter((product) => product.discont_price);
+
+export const selectAllProducts = (state) => state.products.data;
+export const selectCategoryProducts = createSelector(
+  selectAllProducts,
+  (_, categoryId) => categoryId,
+  (products, categoryId) =>
+    products.filter((product) => product.categoryId === categoryId)
+);
+export const selectSaleProducts = createSelector(
+  selectAllProducts,
+  (products) => products.filter((product) => product.discont_price)
+);
+export const selectSaleProductsDashboard = createSelector(
+  selectSaleProducts,
+  (productsWithDiscount) => productsWithDiscount.slice(0, 4)
+);

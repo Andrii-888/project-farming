@@ -5,11 +5,13 @@ import categoriesSlice, {
 import productsSlice, {
   fetchProducts,
 } from "./features/products/productsSlice";
+import cartSlice from "./features/cart/cartSlice";
 
 export const store = configureStore({
   reducer: {
     categories: categoriesSlice,
     products: productsSlice,
+    cart: cartSlice,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../../constants";
 
@@ -8,14 +8,11 @@ const initialState = {
   error: null,
 };
 
-export const fetchCategories = createAsyncThunk(
-  "categories/fetchCategories",
-  async () => {
-    const res = await axios(`${BASE_URL}/categories/all`);
-    const data = await res.data;
-    return data;
-  }
-);
+export const fetchCategories = createAsyncThunk("categories/fetchCategories", async () => {
+  const res = await axios(`${BASE_URL}/categories/all`);
+  const data = await res.data;
+  return data;
+});
 
 export const categoriesSlice = createSlice({
   name: "categories",
@@ -37,6 +34,11 @@ export const categoriesSlice = createSlice({
 });
 
 export default categoriesSlice.reducer;
+
 export const selectAllCategories = (state) => state.categories.data;
-export const selectHomeCategories = (state) =>
-  state.categories.data.slice(0, 4);
+export const selectHomeCategories = createSelector(selectAllCategories, (categories) => categories.slice(0, 4));
+export const selectCategoryTitleById = createSelector(
+  selectAllCategories,
+  (_, categoryId) => categoryId,
+  (categories, categoryId) => categories.find((category) => category.id === categoryId)?.title || "",
+);
