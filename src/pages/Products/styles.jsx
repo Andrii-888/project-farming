@@ -79,14 +79,15 @@ export const AddToCartButton = styled(({ children, ...props }) => (
   <Button {...props}>{children}</Button>
 ))({
   padding: 0,
-  width: "100%",
   height: "72px",
   borderRadius: "21px",
   border: "2px solid #339933",
   color: "#339933",
   backgroundColor: "#F1FFF1",
   position: "absolute",
-  bottom: "20px",
+  bottom: 20,
+  left: 20,
+  right: 20,
 
   display: "none",
   "&:hover": {

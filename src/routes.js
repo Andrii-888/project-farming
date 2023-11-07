@@ -5,15 +5,12 @@ import { APP_ROUTES } from "./constants";
 import Loader from "./components/Loader";
 import Categories from "./pages/Categories/Categories";
 
-// import ProductsPage from "./Component/pages/ProductsPage";
-// import NotFoundPage from "./Component/pages/NotFoundPage";
-// import SingleProduct from "./Component/pages/SingleProduct";
-
 const Home = lazy(() => import("./pages/Home"));
 const Products = lazy(() => import("./pages/Products"));
 const Product = lazy(() => import("./pages/Products/Product"));
-const Sales = lazy(() => import("./pages/Sales"));
+const Cart = lazy(() => import("./pages/Cart"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
   return (
@@ -29,6 +26,7 @@ export default function () {
               </Suspense>
             }
           />
+
           <Route
             path={APP_ROUTES.PRODUCTS}
             element={
@@ -37,6 +35,7 @@ export default function () {
               </Suspense>
             }
           />
+
           <Route
             path={`${APP_ROUTES.PRODUCTS}/:id`}
             element={
@@ -45,19 +44,21 @@ export default function () {
               </Suspense>
             }
           />
-          <Route
-            path={APP_ROUTES.SALES}
-            element={
-              <Suspense fallback={<Loader />}>
-                <Sales />
-              </Suspense>
-            }
-          />
+
           <Route
             path={APP_ROUTES.CATEGORIES}
             element={
               <Suspense fallback={<Loader />}>
                 <Categories />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path={APP_ROUTES.CART}
+            element={
+              <Suspense fallback={<Loader />}>
+                <Cart />
               </Suspense>
             }
           />

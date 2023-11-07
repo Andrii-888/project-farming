@@ -112,7 +112,7 @@ function Home() {
               borderRadius: "13px",
               padding: "25px 50px",
               "&:hover": {
-                backgroundColor: "pink",
+                backgroundColor: "aqua",
               },
             }}
           >
@@ -262,7 +262,7 @@ function Home() {
           }}
         >
           {saleProducts.map((product) => (
-            <ProductListItem {...product} key={product.id} />
+            <ProductListItem product={product} key={product.id} isNotInteractive />
           ))}
         </Stack>
       </Stack>

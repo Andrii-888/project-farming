@@ -12,9 +12,7 @@ function DiscountForm({ onSubmit }) {
   const { palette } = useTheme();
 
   const formSchema = Yup.object().shape({
-    phone: Yup.string()
-      .matches(PHONE_REG_EXP, "Phone number is not valid")
-      .required("Phone is required!"),
+    phone: Yup.string().matches(PHONE_REG_EXP, "Phone number is not valid").required("Phone is required!"),
   });
 
   const methods = useForm({
@@ -52,6 +50,13 @@ function DiscountForm({ onSubmit }) {
           InputProps={{
             sx: {
               minHeight: "100%",
+              "& input": {
+                height: "76px",
+                boxSizing: "border-box",
+              },
+              "& .MuiOutlinedInput-input:-webkit-autofill": {
+                borderRadius: "25px",
+              },
             },
           }}
           onChange={handleBlockLetters}
@@ -68,16 +73,8 @@ function DiscountForm({ onSubmit }) {
             padding: "25px 50px",
           }}
         >
-          <Typography
-            variant="h3"
-            component="span"
-            sx={{ color: palette.common.white }}
-          >
-            {isSubmitting ? (
-              <CircularProgress color="inherit" />
-            ) : (
-              "Get a discount"
-            )}
+          <Typography variant="h3" component="span" sx={{ color: palette.common.white }}>
+            {isSubmitting ? <CircularProgress color="inherit" /> : "Get a discount"}
           </Typography>
         </Button>
       </Stack>

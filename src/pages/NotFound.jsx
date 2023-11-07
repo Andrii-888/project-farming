@@ -11,7 +11,7 @@ function NotFound() {
         backgroundSize: "cover",
         backgroundImage: `url(${Image})`,
         backgroundRepeat: "no-repeat",
-        height: "100%",
+        height: 625,
         width: "100%",
       }}
     />
@@ -19,3 +19,4 @@ function NotFound() {
 }
 
 export default NotFound;
+

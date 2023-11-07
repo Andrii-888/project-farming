@@ -2,37 +2,49 @@ import { Typography, Box, Stack } from "@mui/material";
 import { getPercentage } from "../../utils";
 import { useTheme } from "@mui/material/styles";
 import { AddToCartButton, ProductIconBlock } from "./styles";
-import { useSelector } from "react-redux";
-import { selectProductInCartById } from "../../store/features/cart/cartSlice";
+import { useDispatch } from "react-redux";
+import { addToCart, removeFromCart } from "../../store/features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { APP_ROUTES } from "../../constants";
 
 const getImgPath = (imgName) => {
   return require(`../../assets${imgName}`);
 };
 
-const ProductListItem = ({
-  title,
-  price,
-  discont_price,
-  image,
-  id,
-  onAddToCart,
-  onRemoveFromCart,
-}) => {
-  const { typography } = useTheme();
-  const isProductAddedToCart = useSelector((state) =>
-    selectProductInCartById(state, id)
-  );
+const ProductListItem = ({ product, isNotInteractive = false, isProductAddedToCart }) => {
+  const { title, price, discont_price, image, id } = product;
 
-  const handleAddOrRemoveFromCart = () => {
+  const { typography } = useTheme();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    dispatch(removeFromCart(productId));
+  };
+
+  const handleAddOrRemoveFromCart = (event) => {
+    event.stopPropagation();
+
     if (isProductAddedToCart) {
-      onRemoveFromCart();
+      handleRemoveFromCart(id);
     } else {
-      onAddToCart();
+      handleAddToCart(product);
     }
   };
 
+  const handleNavToProductPage = () => {
+    navigate(`${APP_ROUTES.PRODUCTS}/${id}`);
+  };
+
   return (
-    <Stack sx={{ gap: "20px", alignItems: "center", maxWidth: 300 }} key={id}>
+    <Stack
+      sx={{ gap: "20px", alignItems: "center", maxWidth: 300, cursor: "pointer" }}
+      onClick={handleNavToProductPage}
+    >
       <ProductIconBlock>
         <Box
           component="div"
@@ -44,9 +56,12 @@ const ProductListItem = ({
             width: "300px",
           }}
         />
-        <AddToCartButton onClick={handleAddOrRemoveFromCart}>
-          {isProductAddedToCart ? "Remove from cart" : "Add to cart"}
-        </AddToCartButton>
+
+        {!isNotInteractive && (
+          <AddToCartButton onClick={handleAddOrRemoveFromCart}>
+            {isProductAddedToCart ? "Remove from cart" : "Add to cart"}
+          </AddToCartButton>
+        )}
       </ProductIconBlock>
 
       <Stack
@@ -60,26 +75,22 @@ const ProductListItem = ({
           p: "0 24px 0",
         }}
       >
-        <Typography sx={{ fontSize: "30px" }}>
-          ${discont_price ? discont_price : price}
-        </Typography>
+        <Typography sx={{ fontSize: "30px" }}>${discont_price ? discont_price : price}</Typography>
 
         {discont_price && (
-          <Typography
-            sx={{
-              fontSize: "20px",
-              color: "#8B8B8B",
-              textDecoration: "line-through",
-            }}
-          >
-            ${price}
-          </Typography>
-        )}
+          <>
+            <Typography
+              sx={{
+                fontSize: "20px",
+                color: "#8B8B8B",
+                textDecoration: "line-through",
+              }}
+            >
+              ${price}
+            </Typography>
 
-        {discont_price && (
-          <Typography sx={{ fontSize: "20px", color: "#FF32A1" }}>
-            {getPercentage(price, discont_price)}%
-          </Typography>
+            <Typography sx={{ fontSize: "20px", color: "#FF32A1" }}>{getPercentage(price, discont_price)}%</Typography>
+          </>
         )}
       </Stack>
 

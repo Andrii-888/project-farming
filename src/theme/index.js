@@ -37,16 +37,6 @@ const theme = createTheme({
       fontSize: pxToRem(15),
       fontWeight: 600,
     },
-    // subtitle1: {
-    //   fontWeight: 600,
-    //   lineHeight: 1.5,
-    //   fontSize: pxToRem(16),
-    // },
-    // subtitle2: {
-    //   fontWeight: 600,
-    //   lineHeight: 22 / 14,
-    //   fontSize: pxToRem(14),
-    // },
   },
   palette: {
     primary: {

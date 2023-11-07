@@ -10,47 +10,99 @@ const initialState = {
   products: [],
   isLoading: false,
   error: null,
+  status: "idle",
 };
 
-// export const fetchCategories = createAsyncThunk("categories/fetchCategories", async () => {
-//   const res = await axios(`${BASE_URL}/categories/all`);
-//   const data = await res.data;
-//   return data;
-// });
+export const submitOrder = createAsyncThunk(
+  "cart/submitOrder",
+  async (data) => {
+    const res = await axios.post(`${BASE_URL}/order/send`, data);
+    return await res.data;
+  }
+);
 
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
     addToCart(state, action) {
-      state.products.push(action.payload);
+      if (
+        !state.products.find(
+          (product) => +product.item.id === +action.payload.id
+        )
+      ) {
+        state.products.push({
+          amount: 1,
+          item: action.payload,
+        });
+      }
     },
     removeFromCart(state, action) {
-      state.products.filter((product) => product.id !== action.payload);
+      const idx = state.products.findIndex(
+        (product) => +product.item.id === +action.payload
+      );
+
+      state.products.splice(idx, 1);
+    },
+    resetCartStatus(state) {
+      state.status = "idle";
+    },
+    changeProductAmount(state, action) {
+      const idx = state.products.findIndex(
+        (product) => +product.item.id === +action.payload.id
+      );
+
+      if (idx >= 0) {
+        const isOperationNotAllowed =
+          !action.payload.operand &&
+          state.products[idx].amount + action.payload.operand === 1;
+
+        state.products[idx].amount = isOperationNotAllowed
+          ? state.products[idx].amount
+          : state.products[idx].amount + action.payload.operand;
+      }
     },
   },
-  //   extraReducers: (builder) => {
-  //     builder.addCase(fetchCategories.pending, (state) => {
-  //       state.isLoading = true;
-  //     });
-  //     builder.addCase(fetchCategories.fulfilled, (state, action) => {
-  //       state.isLoading = false;
-  //       state.data = action.payload;
-  //     });
-  //     builder.addCase(fetchCategories.rejected, (state, action) => {
-  //       state.isLoading = false;
-  //       state.error = action.error.message;
-  //     });
-  //   },
+  extraReducers: (builder) => {
+    builder.addCase(submitOrder.pending, (state) => {
+      state.status = "pending";
+    });
+    builder.addCase(submitOrder.fulfilled, (state) => {
+      state.status = "success";
+    });
+    builder.addCase(submitOrder.rejected, (state, action) => {
+      state.error = action.error.message;
+      state.status = "error";
+    });
+  },
 });
 
 export default cartSlice.reducer;
-export const { addToCart, removeFromCart } = cartSlice.actions;
-export const selectCartProducts = (state) => state.cart.products;
+export const {
+  addToCart,
+  removeFromCart,
+  resetCartStatus,
+  changeProductAmount,
+} = cartSlice.actions;
 
+export const selectCartProducts = (state) => state.cart.products;
+export const selectCartStatus = (state) => state.cart.status;
+export const selectCartError = (state) => state.cart.error;
+export const selectCartProductsLength = (state) => state.cart.products.length;
 export const selectProductInCartById = createSelector(
   selectCartProducts,
   (_, productId) => productId,
   (products, productId) =>
-    !!products.find((product) => product.id === productId)
+    !!products.find((product) => +product.item.id === +productId)
+);
+export const selectCartTotal = createSelector(selectCartProducts, (products) =>
+  products.reduce((total, product) => {
+    return (
+      total +
+      product.amount *
+        (product.item.discont_price
+          ? product.item.discont_price
+          : product.item.price)
+    );
+  }, 0)
 );

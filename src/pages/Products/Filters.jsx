@@ -37,9 +37,7 @@ const Filters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const filters = Object.fromEntries(searchParams);
 
-  const [sortedBy, setSortedBy] = useState(
-    filters.sortedBy || SORT_OPTIONS.DEFAULT
-  );
+  const [sortedBy, setSortedBy] = useState(filters.sortedBy || SORT_OPTIONS.DEFAULT);
   const [discounted, setDiscounted] = useState(!!filters.discounted);
   const [range, setRange] = useState({
     from: filters.from || "",
@@ -54,11 +52,9 @@ const Filters = () => {
       ...params,
     };
 
-    setSearchParams(
-      Object.fromEntries(
-        Object.entries(combinedParams).filter(([_, value]) => !!value)
-      )
-    );
+    setSearchParams(Object.fromEntries(Object.entries(combinedParams).filter(([_, value]) => !!value)), {
+      state,
+    });
   };
 
   const handleChangeDiscounted = (event) => {
@@ -113,18 +109,8 @@ const Filters = () => {
           Price
         </Typography>
 
-        <NumberTextField
-          label="from"
-          name="from"
-          value={range.from}
-          onChange={handleChangeRange}
-        />
-        <NumberTextField
-          label="to"
-          name="to"
-          value={range.to}
-          onChange={handleChangeRange}
-        />
+        <NumberTextField label="from" name="from" value={range.from} onChange={handleChangeRange} />
+        <NumberTextField label="to" name="to" value={range.to} onChange={handleChangeRange} />
       </Stack>
 
       {!sale && (
@@ -142,10 +128,7 @@ const Filters = () => {
           >
             Discounted items
           </Typography>
-          <StyledCheckbox
-            checked={discounted}
-            onChange={handleChangeDiscounted}
-          />
+          <StyledCheckbox checked={discounted} onChange={handleChangeDiscounted} />
         </Stack>
       )}
 

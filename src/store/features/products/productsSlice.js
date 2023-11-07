@@ -8,14 +8,11 @@ const initialState = {
   error: null,
 };
 
-export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
-  async () => {
-    const res = await axios(`${BASE_URL}/products/all`);
-    const data = await res.data;
-    return data;
-  }
-);
+export const fetchProducts = createAsyncThunk("products/fetchProducts", async () => {
+  const res = await axios(`${BASE_URL}/products/all`);
+  const data = await res.data;
+  return data;
+});
 
 export const productsSlice = createSlice({
   name: "products",
@@ -42,14 +39,16 @@ export const selectAllProducts = (state) => state.products.data;
 export const selectCategoryProducts = createSelector(
   selectAllProducts,
   (_, categoryId) => categoryId,
-  (products, categoryId) =>
-    products.filter((product) => product.categoryId === categoryId)
+  (products, categoryId) => products.filter((product) => product.categoryId === categoryId)
 );
-export const selectSaleProducts = createSelector(
+export const selectSaleProducts = createSelector(selectAllProducts, (products) =>
+  products.filter((product) => product.discont_price)
+);
+export const selectSaleProductsDashboard = createSelector(selectSaleProducts, (productsWithDiscount) =>
+  productsWithDiscount.slice(0, 4)
+);
+export const selectProductById = createSelector(
   selectAllProducts,
-  (products) => products.filter((product) => product.discont_price)
-);
-export const selectSaleProductsDashboard = createSelector(
-  selectSaleProducts,
-  (productsWithDiscount) => productsWithDiscount.slice(0, 4)
+  (_, productId) => productId,
+  (products, productId) => products.find((product) => Number(product.id) === Number(productId)) || {}
 );
