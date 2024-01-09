@@ -1,110 +1,16 @@
-// import { Box, Grid, Link, Stack, SvgIcon, Typography } from "@mui/material";
-// import { styled } from "@mui/material/styles";
-// import { ADDRESS, PHONE_NUMBER } from "../../constants";
-
-// // import { ReactComponent as Instagram } from "../../assets/instagram.svg";
-// // import { ReactComponent as Watsap } from "../../assets/watsap.svg";
-// import { responsiveFontSizes } from "../../utils";
-
-// const PhoneNumber = styled(Typography)(({ theme }) => ({
-//   fontWeight: theme.typography.fontWeightMedium,
-//   lineHeight: "91px",
-//   margin: "25px 0 30px 0",
-//   ...responsiveFontSizes({ sm: 50, md: 60, lg: 70 }),
-// }));
-
-// const Address = styled(Typography)(({ theme }) => ({
-//   color: theme.palette.text.main,
-//   fontWeight: theme.typography.fontWeightMedium,
-//   textDecorationColor: theme.palette.text.main,
-//   cursor: "pointer",
-//   "&:hover": {
-//     textDecorationColor: "#0069c2",
-//   },
-// }));
-
-// const svgStyle = {
-//   width: "50px",
-//   height: "50px",
-// };
-
-// function Footer() {
-//   return (
-//     <Box component="footer" sx={{ p: "48px 32px 47px 32px" }}>
-//       <Grid container spacing={6}>
-//         <Grid container item xs={12}>
-//           <Grid item xs={6}>
-//             <Typography variant="h1">Contact</Typography>
-
-//             <PhoneNumber>{PHONE_NUMBER}</PhoneNumber>
-
-//             <Stack flexDirection="row" gap={8}>
-//               <Stack gap={1} alignItems="center">
-//                 <SvgIcon sx={svgStyle}></SvgIcon>
-//                 <Typography variant="caption">Instagram</Typography>
-//               </Stack>
-
-//               <Stack gap={1} alignItems="center">
-//                 <SvgIcon sx={svgStyle}></SvgIcon>
-//                 <Typography variant="caption">WhatsApp</Typography>
-//               </Stack>
-//             </Stack>
-//           </Grid>
-//           <Grid item xs={6} sx={{ paddingLeft: "142px" }}>
-//             <Typography variant="h1" sx={{ pb: "25px" }}>
-//               Address
-//             </Typography>
-
-//             <Address
-//               variant="h1"
-//               component={Link}
-//               href="https://www.google.com/search?q=telranDE"
-//               rel="noopener noreferrer"
-//               target="_blank"
-//             >
-//               {ADDRESS}
-//             </Address>
-//             <Typography variant="body2" sx={{ fontWeight: 500, pt: "30px" }}>
-//               Working Hours:
-//             </Typography>
-//             <Typography variant="body1" sx={{ fontWeight: 700 }}>
-//               24 hours a day
-//             </Typography>
-//           </Grid>
-//         </Grid>
-//         <Grid item xs={12}>
-//           <Box
-//             component="div"
-//             sx={{
-//               backgroundPosition: "center",
-//               backgroundSize: "cover",
-//               // backgroundImage: `url(${Image})`,
-//               backgroundRepeat: "no-repeat",
-//               height: "525px",
-//               width: "100%",
-//             }}
-//           />
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// }
-
-// export default Footer;
-
 import { Box, Grid, Icon, Paper, Typography } from "@mui/material";
 import React from "react";
-import Instagram from "../../assets/instagram.png";
-import Whatsap from "../../assets/whatsapp.png";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 function Footer() {
   return (
-    <Box component="footer" sx={{ p: "80px 40px 47px 40px" }}>
+    <Box component="footer" sx={{ p: "25px 40px 80px 40px" }}>
       <Typography
         variant="h1"
         sx={{
           color: "#282828",
-          fontSize: "54px",
+          fontSize: { xs: "28px", md: "54px" },
           fontStyle: "normal",
           fontWeight: "700",
           lineHeight: "110%",
@@ -116,13 +22,15 @@ function Footer() {
         container
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+        // columns={{ xs: 1, sm: 2 }}
+        // rows={{ xs: 4, sm: 2 }}
         sx={{ m: "40px 0 0 40px" }}
       >
-        <Grid item xs={7}>
+        <Grid item xs={12} md={7}>
           <Paper
             elevation={24}
             sx={{
-              width: "780px",
+              maxWidth: "780px",
               height: "150px",
               borderRadius: "12px",
               backgroundColor: "#f5f5f5",
@@ -143,7 +51,7 @@ function Footer() {
               sx={{
                 m: "16px 0 0 32px",
                 color: "#282828",
-                fontSize: "40px",
+                fontSize: { xs: "20px", md: "40px" },
                 fontWeight: 600,
                 alignSelf: "stretch",
                 fontFamily: "Montserrat",
@@ -153,11 +61,11 @@ function Footer() {
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={12} md={5}>
           <Paper
             elevation={24}
             sx={{
-              width: "548px",
+              maxWidth: "548px",
               height: "150px",
               borderRadius: "12px",
               backgroundColor: "#f5f5f5",
@@ -176,34 +84,34 @@ function Footer() {
             >
               Socials
             </Typography>
-            <Icon
+            <Box
               sx={{
-                color: "#282828",
-                width: "43px",
-                height: "44px",
-                m: "16px 0 0 32px",
+                my: 3,
+                m: "16px 0px 32px 32px",
+                "& svg": {
+                  height: "43px",
+                  width: "43px",
+                  color: "#282828",
+                  cursor: "pointer",
+                },
+                "& svg:hover": {
+                  color: "goldenrod",
+                  transform: "translateX(5px)",
+                  transition: "all 400ms",
+                },
               }}
             >
-              <img src={Instagram} alt="instagram" />
-            </Icon>
-            <Icon
-              sx={{
-                color: "#282828",
-                width: "43px",
-                height: "44px",
-                m: "16px 0 0 16px",
-              }}
-            >
-              <img src={Whatsap} alt="whatsap" />
-            </Icon>
+              <InstagramIcon style={{ gap: "16px" }} />
+              <WhatsAppIcon />
+            </Box>
           </Paper>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={12} md={7}>
           <Paper
             elevation={24}
             sx={{
               gap: "16px",
-              width: "780px",
+              maxWidth: "780px",
               height: "194px",
               borderRadius: "12px",
               backgroundColor: "#f5f5f5",
@@ -223,7 +131,7 @@ function Footer() {
               sx={{
                 p: "0 0 32px 32px",
                 color: "#282828",
-                fontSize: "35px",
+                fontSize: { xs: "20px", md: "35px" },
                 fontWeight: "400",
                 fontStyle: "normal",
                 fontFamily: "Montserrat",
@@ -233,11 +141,11 @@ function Footer() {
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={12} md={5}>
           <Paper
             elevation={24}
             sx={{
-              width: "548px",
+              maxWidth: "548px",
               height: "194px",
               borderRadius: "12px",
               backgroundColor: "#f5f5f5",
@@ -260,7 +168,7 @@ function Footer() {
             <Typography
               sx={{
                 color: "#282828",
-                fontSize: "40px",
+                fontSize: { xs: "20px", md: "40px" },
                 fontFamily: "Montserrat",
                 fontStyle: "normal",
                 fontWeight: "600",

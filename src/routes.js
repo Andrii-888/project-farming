@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout";
 import { APP_ROUTES } from "./constants";
 import Loader from "./components/Loader";
-//import Categories from "./pages/Categories/Categories";
+import Categories from "./pages/Categories/Categories";
 
 const Home = lazy(() => import("./pages/Home"));
-// const Products = lazy(() => import("./pages/Products"));
-// const Product = lazy(() => import("./pages/Products/Product"));
-// const Cart = lazy(() => import("./pages/Cart"));
+const Products = lazy(() => import("./pages/Products"));
+const Product = lazy(() => import("./pages/Products/Product"));
+const Cart = lazy(() => import("./pages/Cart"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -23,6 +23,42 @@ export default function () {
             element={
               <Suspense fallback={<Loader />}>
                 <Home />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path={APP_ROUTES.PRODUCTS}
+            element={
+              <Suspense fallback={<Loader />}>
+                <Products />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path={`${APP_ROUTES.PRODUCTS}/:id`}
+            element={
+              <Suspense fallback={<Loader />}>
+                <Product />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path={APP_ROUTES.CATEGORIES}
+            element={
+              <Suspense fallback={<Loader />}>
+                <Categories />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path={APP_ROUTES.CART}
+            element={
+              <Suspense fallback={<Loader />}>
+                <Cart />
               </Suspense>
             }
           />

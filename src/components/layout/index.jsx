@@ -12,7 +12,6 @@ function Layout() {
       <Content>
         <Outlet />
       </Content>
-
       <Footer />
     </StyledContainer>
   );

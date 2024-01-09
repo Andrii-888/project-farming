@@ -37,7 +37,9 @@ const Filters = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const filters = Object.fromEntries(searchParams);
 
-  const [sortedBy, setSortedBy] = useState(filters.sortedBy || SORT_OPTIONS.DEFAULT);
+  const [sortedBy, setSortedBy] = useState(
+    filters.sortedBy || SORT_OPTIONS.DEFAULT
+  );
   const [discounted, setDiscounted] = useState(!!filters.discounted);
   const [range, setRange] = useState({
     from: filters.from || "",
@@ -52,9 +54,14 @@ const Filters = () => {
       ...params,
     };
 
-    setSearchParams(Object.fromEntries(Object.entries(combinedParams).filter(([_, value]) => !!value)), {
-      state,
-    });
+    setSearchParams(
+      Object.fromEntries(
+        Object.entries(combinedParams).filter(([_, value]) => !!value)
+      ),
+      {
+        state,
+      }
+    );
   };
 
   const handleChangeDiscounted = (event) => {
@@ -89,8 +96,9 @@ const Filters = () => {
 
   return (
     <Stack
-      flexDirection="row"
       sx={{
+        flexDirection: { xs: "column", md: "row" },
+        justifyContent: "center",
         alignItems: "center",
         margin: "88px 0 54px 0",
       }}
@@ -109,12 +117,30 @@ const Filters = () => {
           Price
         </Typography>
 
-        <NumberTextField label="from" name="from" value={range.from} onChange={handleChangeRange} />
-        <NumberTextField label="to" name="to" value={range.to} onChange={handleChangeRange} />
+        <NumberTextField
+          label="from"
+          name="from"
+          value={range.from}
+          onChange={handleChangeRange}
+        />
+        <NumberTextField
+          label="to"
+          name="to"
+          value={range.to}
+          onChange={handleChangeRange}
+        />
       </Stack>
 
       {!sale && (
-        <Stack flexDirection="row" sx={{ alignItems: "center" }}>
+        <Stack
+          flexDirection="row"
+          sx={{
+            alignItems: "center",
+            justifyContent: { xs: "space-between" },
+            gap: "20px",
+            m: { xs: "20px 0", md: "0" },
+          }}
+        >
           <Typography
             sx={{
               fontSize: "1.25rem",
@@ -123,16 +149,22 @@ const Filters = () => {
               lineHeight: "1.625rem",
               letterSpacing: "0.0375rem",
               color: palette.common.black,
-              margin: "0 39px 0 40px",
+              m: { xs: "20px 0", md: "0 39px 0 40px" },
             }}
           >
             Discounted items
           </Typography>
-          <StyledCheckbox checked={discounted} onChange={handleChangeDiscounted} />
+          <StyledCheckbox
+            checked={discounted}
+            onChange={handleChangeDiscounted}
+          />
         </Stack>
       )}
 
-      <Stack flexDirection="row" sx={{ alignItems: "center" }}>
+      <Stack
+        flexDirection="row"
+        sx={{ alignItems: "center", m: { xs: "20px 0", md: "0" } }}
+      >
         <Typography
           sx={{
             fontSize: "1.25rem",
@@ -141,7 +173,7 @@ const Filters = () => {
             lineHeight: "1.625rem",
             letterSpacing: "0.0375rem",
             color: palette.common.black,
-            m: "0 41px 0 91px",
+            m: { xs: "0 10px", md: "0 41px 0 91px" },
           }}
         >
           Sorted

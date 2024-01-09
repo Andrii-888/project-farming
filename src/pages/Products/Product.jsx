@@ -1,7 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectProductById } from "../../store/features/products/productsSlice";
-import { Box, Button, Container, Divider, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 import { addToCart, removeFromCart } from "../../store/features/cart/cartSlice";
 import { getPercentage, pxToRem } from "../../utils";
@@ -19,7 +27,9 @@ function Product() {
   const product = useSelector((state) => selectProductById(state, id));
   const { description, image, title, discont_price, price } = product || {};
 
-  const isProductAddedToCart = useSelector((state) => selectProductInCartById(state, id));
+  const isProductAddedToCart = useSelector((state) =>
+    selectProductInCartById(state, id)
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -42,7 +52,14 @@ function Product() {
   };
 
   return (
-    <Container disableGutters sx={{ p: "0 30px 0 30px", m: "140px 0 190px 0" }} maxWidth={false}>
+    <Container
+      disableGutters
+      sx={{
+        p: { xs: "0 15px", md: "0 30px" },
+        m: { xs: "30px 0", md: "70px 0" },
+      }}
+      maxWidth={false}
+    >
       <Typography
         sx={{
           fontSize: "36px",
@@ -62,10 +79,10 @@ function Product() {
             sx={{
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              height: "710px",
+              height: { xs: "320px", md: "750px" },
               maxWidth: "710px",
               backgroundImage: `url(${getImgPath(image)})`,
-              m: "0 60px",
+              m: { xs: "10px", md: "0 60px" },
             }}
           />
         </Grid>
@@ -74,7 +91,7 @@ function Product() {
           <Stack
             gap={5}
             sx={{
-              mr: "60px",
+              mr: { xs: "10px", md: "60px" },
             }}
           >
             <Stack
@@ -114,7 +131,13 @@ function Product() {
                     {price}$
                   </Typography>
 
-                  <Typography sx={{ fontSize: pxToRem(28), color: "#FF32A1", fontWeight: 600 }}>
+                  <Typography
+                    sx={{
+                      fontSize: pxToRem(28),
+                      color: "#FF32A1",
+                      fontWeight: 600,
+                    }}
+                  >
                     {getPercentage(price, discont_price)}
                   </Typography>
                 </>
@@ -125,7 +148,8 @@ function Product() {
               color="success"
               onClick={handleAddOrRemoveFromCart}
               sx={{
-                width: "341px",
+                maxWidth: "341px",
+                width: "100%",
                 height: "86px",
                 borderRadius: "10px",
                 justifyContent: "center",

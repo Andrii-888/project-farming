@@ -11,12 +11,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import { HeaderStyled, StyledRouterLink } from "./style";
 import { Icon } from "@mui/material";
-import Logo from "../../assets/logo.svg";
-import Cart from "../../assets/cart.svg";
-
 import { APP_ROUTES } from "../../constants";
+import IconDiolog from "../layout/IconDiolog";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import { Link } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 320;
 
 const navItems = [
   { title: "Main Page", to: APP_ROUTES.MAIN },
@@ -35,24 +35,18 @@ function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Icon
-        sx={{
-          height: "70px",
-          width: "70px",
-        }}
-      >
-        <img src={Logo} alt="logo" />
-      </Icon>
-
       <Divider />
 
       <List>
         {navItems.map((item) => (
-          <ListItem key={item.title} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item.title} />
-            </ListItemButton>
-          </ListItem>
+          <Link to={item.to}>
+            {" "}
+            <ListItem key={item.title} disablePadding>
+              <ListItemButton sx={{ textAlign: "center" }}>
+                <ListItemText primary={item.title} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
     </Box>
@@ -83,7 +77,7 @@ function DrawerAppBar(props) {
               display: { xs: "none", sm: "block" },
             }}
           >
-            <img src={Logo} alt="logo" />
+            <IconDiolog />
           </Icon>
 
           <Box
@@ -93,14 +87,36 @@ function DrawerAppBar(props) {
             }}
           >
             {navItems.map((item) => (
-              <StyledRouterLink  key={item.title} to={item.to}>
+              <StyledRouterLink
+                key={item.title}
+                to={item.to}
+                activeclassame="active"
+              >
                 {item.title}
-              </StyledRouterLink >
+              </StyledRouterLink>
             ))}
           </Box>
-          <Icon sx={{ height: "48px", width: "48px", cursor: "pointer" }}>
-            <img src={Cart} alt="cart" />
-          </Icon>
+          <Link to="/cart">
+            <Box
+              sx={{
+                my: 3,
+                "& svg": {
+                  color: "#339933",
+                  fontSize: "70px",
+                  cursor: "pointer",
+                  ml: "auto",
+                  m: 0,
+                },
+                "& svg:hover": {
+                  color: "gold",
+                  transform: "translateX(5px)",
+                  transition: "all 400ms",
+                },
+              }}
+            >
+              <RestoreFromTrashIcon />
+            </Box>
+          </Link>
         </Toolbar>
       </HeaderStyled>
       <nav>
@@ -110,7 +126,7 @@ function DrawerAppBar(props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, 
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },

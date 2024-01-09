@@ -35,6 +35,6 @@ export const StyledRouterLink = styled(RouterLink)(() => ({
   fontWeight: 500,
   lineHeight: "130%",
   "&:hover": {
-    color: "green",
+    color: "gold",
   },
 }));

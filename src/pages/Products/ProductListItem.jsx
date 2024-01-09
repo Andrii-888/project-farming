@@ -11,7 +11,11 @@ const getImgPath = (imgName) => {
   return require(`../../assets${imgName}`);
 };
 
-const ProductListItem = ({ product, isNotInteractive = false, isProductAddedToCart }) => {
+const ProductListItem = ({
+  product,
+  isNotInteractive = false,
+  isProductAddedToCart,
+}) => {
   const { title, price, discont_price, image, id } = product;
 
   const { typography } = useTheme();
@@ -42,7 +46,12 @@ const ProductListItem = ({ product, isNotInteractive = false, isProductAddedToCa
 
   return (
     <Stack
-      sx={{ gap: "20px", alignItems: "center", maxWidth: 300, cursor: "pointer" }}
+      sx={{
+        gap: "20px",
+        alignItems: "center",
+        maxWidth: "300px",
+        cursor: "pointer",
+      }}
       onClick={handleNavToProductPage}
     >
       <ProductIconBlock>
@@ -53,7 +62,7 @@ const ProductListItem = ({ product, isNotInteractive = false, isProductAddedToCa
             backgroundImage: `url(${getImgPath(image)})`,
             backgroundRepeat: "no-repeat",
             height: "350px",
-            width: "300px",
+            width: "280px",
           }}
         />
 
@@ -75,7 +84,9 @@ const ProductListItem = ({ product, isNotInteractive = false, isProductAddedToCa
           p: "0 24px 0",
         }}
       >
-        <Typography sx={{ fontSize: "30px" }}>${discont_price ? discont_price : price}</Typography>
+        <Typography sx={{ fontSize: "30px" }}>
+          ${discont_price ? discont_price : price}
+        </Typography>
 
         {discont_price && (
           <>
@@ -89,7 +100,9 @@ const ProductListItem = ({ product, isNotInteractive = false, isProductAddedToCa
               ${price}
             </Typography>
 
-            <Typography sx={{ fontSize: "20px", color: "#FF32A1" }}>{getPercentage(price, discont_price)}%</Typography>
+            <Typography sx={{ fontSize: "20px", color: "#FF32A1" }}>
+              {getPercentage(price, discont_price)}%
+            </Typography>
           </>
         )}
       </Stack>
