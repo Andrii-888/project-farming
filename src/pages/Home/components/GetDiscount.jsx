@@ -33,7 +33,7 @@ const GetDiscount = () => {
       //   ...fields,
 
       // })
-      console.log(fields);
+     
     },
     [dispatch]
   );

@@ -14,8 +14,10 @@ import { useMemo } from "react";
 
 function Products() {
   const { state } = useLocation();
-  const { sale = false, categoryId = null } = state || {};
+  const location = useLocation();
 
+  const { sale = false, categoryId = null } = state || {};
+ 
   const [searchParams] = useSearchParams();
   const { discounted, to, from, sortedBy } = Object.fromEntries(searchParams);
 
@@ -24,8 +26,12 @@ function Products() {
 
   const saleProducts = useSelector(selectSaleProducts);
   const cartProducts = useSelector(selectCartProducts);
-  const categoryProducts = useSelector((state) => selectCategoryProducts(state, categoryId));
-  const selectedCategoryTitle = useSelector((state) => selectCategoryTitleById(state, categoryId));
+  const categoryProducts = useSelector((state) =>
+    selectCategoryProducts(state, categoryId)
+  );
+  const selectedCategoryTitle = useSelector((state) =>
+    selectCategoryTitleById(state, categoryId)
+  );
 
   if (sale) {
     products = [...saleProducts];
@@ -36,7 +42,9 @@ function Products() {
   }
 
   if (to && from && from <= to) {
-    products = products.filter((product) => product.price >= from && product.price <= to);
+    products = products.filter(
+      (product) => product.price >= from && product.price <= to
+    );
   }
 
   if (discounted) {
@@ -46,7 +54,11 @@ function Products() {
   if (sortedBy && sortedBy !== "default") {
     products = products.toSorted((product1, product2) => {
       if (sortedBy === "price") {
-        return product1.price > product2.price ? 1 : product1.price < product2.price ? -1 : 0;
+        return product1.price > product2.price
+          ? 1
+          : product1.price < product2.price
+          ? -1
+          : 0;
       }
 
       if (sortedBy === "discount") {
@@ -75,9 +87,16 @@ function Products() {
     });
   }
 
-  const title = sale ? "Products with sale" : categoryId ? selectedCategoryTitle : "All Products";
+  const title = sale
+    ? "Products with sale"
+    : categoryId
+    ? selectedCategoryTitle
+    : "All Products";
 
-  const cartProductIds = useMemo(() => cartProducts.map((product) => product.item.id), [cartProducts]);
+  const cartProductIds = useMemo(
+    () => cartProducts.map((product) => product.item.id),
+    [cartProducts]
+  );
 
   return (
     <Container disableGutters maxWidth={false} sx={{ p: "0 30px" }}>

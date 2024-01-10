@@ -22,7 +22,13 @@ const navItems = [
   { title: "Main Page", to: APP_ROUTES.MAIN },
   { title: "Categories", to: APP_ROUTES.CATEGORIES },
   { title: "All products", to: APP_ROUTES.PRODUCTS },
-  { title: "All sales", to: APP_ROUTES.SALES },
+  {
+    title: "All sales",
+    to: APP_ROUTES.SALES,
+    sales: {
+      sale: true,
+    },
+  },
 ];
 
 function DrawerAppBar(props) {
@@ -39,9 +45,9 @@ function DrawerAppBar(props) {
 
       <List>
         {navItems.map((item) => (
-          <Link to={item.to}>
+          <Link to={item.to} key={item.title}>
             {" "}
-            <ListItem key={item.title} disablePadding>
+            <ListItem disablePadding>
               <ListItemButton sx={{ textAlign: "center" }}>
                 <ListItemText primary={item.title} />
               </ListItemButton>
@@ -90,6 +96,7 @@ function DrawerAppBar(props) {
               <StyledRouterLink
                 key={item.title}
                 to={item.to}
+                state={item.sales}
                 activeclassame="active"
               >
                 {item.title}

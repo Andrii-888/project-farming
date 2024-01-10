@@ -10,6 +10,7 @@ const Products = lazy(() => import("./pages/Products"));
 const Product = lazy(() => import("./pages/Products/Product"));
 const Cart = lazy(() => import("./pages/Cart"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Sale = lazy(() => import("./pages/Sales/"));
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
@@ -59,6 +60,15 @@ export default function () {
             element={
               <Suspense fallback={<Loader />}>
                 <Cart />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path={APP_ROUTES.SALES}
+            element={
+              <Suspense fallback={<Loader />}>
+                <Sale />
               </Suspense>
             }
           />

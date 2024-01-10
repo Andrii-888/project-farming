@@ -1,5 +1,5 @@
 import { Alert, Grid, Snackbar, Stack, Typography } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Page from "../../components/Page";
 import { APP_ROUTES } from "../../constants";
@@ -13,6 +13,7 @@ import {
   selectCartStatus,
   selectCartTotal,
   submitOrder,
+  removeAllFromCart,
 } from "../../store/features/cart/cartSlice";
 import OrderForm from "../../components/forms/OrderForm";
 import { useCallback, useState } from "react";
@@ -26,7 +27,7 @@ const Link = styled(RouterLink)(({ theme }) => ({
 
 const Cart = () => {
   const [message, setMessage] = useState("");
-
+  const navigate = useNavigate();
   const { palette, typography } = useTheme();
   const dispatch = useDispatch();
 
@@ -35,14 +36,18 @@ const Cart = () => {
   const status = useSelector(selectCartStatus);
   const error = useSelector(selectCartError);
   const handleSubmitOrder = useCallback(
-    (fields) => {
-      
-      dispatch(
+    async (fields) => {
+      const res = await dispatch(
         submitOrder({
           ...fields,
           total,
         })
       );
+    
+      if (res.payload.status === "OK") {
+        navigate("/");
+        dispatch(removeAllFromCart());
+      }
     },
     [dispatch, total]
   );

@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../../../constants";
+import uniqid from "uniqid";
 
 const initialState = {
   products: [],
@@ -16,9 +17,13 @@ const initialState = {
 export const submitOrder = createAsyncThunk(
   "cart/submitOrder",
   async (data) => {
-   
     const res = await axios.post(`${BASE_URL}/order/send`, data);
-    return await res.data;
+    if (res.status === 200) {
+      const id = uniqid();
+    
+      localStorage.setItem(`cart-${id}`, JSON.stringify(data));
+      return await res.data;
+    }
   }
 );
 
@@ -38,6 +43,9 @@ export const cartSlice = createSlice({
         });
       }
     },
+    removeAllFromCart(state) {
+      state.products = [];
+    },
     removeFromCart(state, action) {
       const idx = state.products.findIndex(
         (product) => +product.item.id === +action.payload
@@ -52,7 +60,7 @@ export const cartSlice = createSlice({
       const idx = state.products.findIndex(
         (product) => +product.item.id === +action.payload.id
       );
-      console.log(idx);
+     
       if (idx >= 0) {
         const isOperationNotAllowed =
           !action.payload.operand &&
@@ -84,6 +92,7 @@ export const {
   removeFromCart,
   resetCartStatus,
   changeProductAmount,
+  removeAllFromCart,
 } = cartSlice.actions;
 
 export const selectCartProducts = (state) => state.cart.products;

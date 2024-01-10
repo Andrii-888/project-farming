@@ -7,6 +7,7 @@ import productsSlice, {
 } from "./features/products/productsSlice";
 import cartSlice from "./features/cart/cartSlice";
 import saleSlice from "./features/sale/saleSlice";
+import { fetchSalesProducts } from "./features/sale/saleSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,3 +21,4 @@ export const store = configureStore({
 
 store.dispatch(fetchCategories());
 store.dispatch(fetchProducts());
+store.dispatch(fetchSalesProducts());

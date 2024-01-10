@@ -15,24 +15,26 @@ const initialState = {
 
 export const saleOrder = createAsyncThunk("cart/saleOrder", async (data) => {
   const res = await axios.post(`${BASE_URL}/sale/send`, data);
-  console.log(res.data);
+
   return await res.data;
 });
+
 export const saleSlice = createSlice({
   name: "sale",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(saleOrder.pending, (state) => {
-      state.status = "pending";
-    });
-    builder.addCase(saleOrder.fulfilled, (state) => {
-      state.status = "success";
-    });
-    builder.addCase(saleOrder.rejected, (state, action) => {
-      state.error = action.error.message;
-      state.status = "error";
-    });
+    // builder.addCase(saleOrder.pending, (state) => {
+    //   state.status = "pending";
+    // });
+    // builder.addCase(saleOrder.fulfilled, (state) => {
+    //   state.status = "success";
+    // });
+    // builder.addCase(saleOrder.rejected, (state, action) => {
+    //   state.error = action.error.message;
+    //   state.status = "error";
+    // });
+   
   },
 });
 export default saleSlice.reducer;
